@@ -1,0 +1,32 @@
+.how-to-use {
+  padding: 3rem 1rem;
+  background-color: var(--background);
+  overflow: hidden;
+}
+
+.how-container {
+  margin: 0 auto;
+}
+
+.how-heading {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: var(--text);
+  margin-bottom: 2.5rem;
+}
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2x2 grid layout */
+  gap: 3rem;
+  max-width: 900px; /* Limit width for better readability */
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .how-grid {
+    grid-template-columns: 1fr; /* Stack cards on mobile */
+    gap: 1.5rem;
+  }
+}

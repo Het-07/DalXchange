@@ -1,0 +1,327 @@
+/* Card container */
+.listing-card {
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 450px; /* Fixed height for all cards */
+  width: 100%;
+  transition: all var(--transition-medium) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  transform-origin: center bottom;
+}
+
+.listing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+}
+
+.listing-card:active {
+  transform: translateY(-4px);
+}
+
+/* Category badge */
+.listing-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: var(--primary);
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  z-index: 2;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-medium) ease;
+}
+
+.listing-card:hover .listing-badge {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+/* Image container with fixed aspect ratio */
+.listing-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.listing-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform var(--transition-medium)
+    cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.listing-card:hover .listing-image {
+  transform: scale(1.08);
+}
+
+/* Price tag */
+.listing-price-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: var(--accent);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(167, 40, 54, 0.3);
+  transition: all var(--transition-medium) ease;
+}
+
+.listing-card:hover .listing-price-tag {
+  transform: scale(1.05) translateX(-3px);
+  box-shadow: 0 4px 12px rgba(167, 40, 54, 0.4);
+}
+
+/* Content area */
+.listing-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: var(--background);
+  height: 250px; /* Fixed height for content area */
+  overflow: hidden; /* Hide overflow content */
+  position: relative;
+  transition: background-color var(--transition-medium) ease;
+}
+
+.listing-card:hover .listing-content {
+  background-color: #f5f6f7;
+}
+
+/* Title styling */
+.listing-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: var(--text);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  transition: color var(--transition-fast) ease;
+}
+
+.listing-card:hover .listing-title {
+  color: var(--accent);
+}
+
+/* Description styling */
+.listing-description {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  flex-grow: 1;
+  /* For long descriptions, add ellipsis */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 2.8rem; /* Limit height to 2 lines */
+  transition: color var(--transition-fast) ease;
+}
+
+.listing-card:hover .listing-description {
+  color: #424242;
+}
+
+/* Meta information */
+.listing-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  transition: opacity var(--transition-fast) ease;
+}
+
+.listing-card:hover .listing-meta {
+  opacity: 0.9;
+}
+
+/* Email styling */
+.listing-email {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  transition: transform var(--transition-fast) ease;
+}
+
+.listing-card:hover .listing-email {
+  transform: translateX(2px);
+}
+
+/* Date styling */
+.listing-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform var(--transition-fast) ease;
+}
+
+.listing-card:hover .listing-date {
+  transform: translateX(2px);
+}
+
+/* Action buttons */
+.listing-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+  opacity: 0.9;
+  transform: translateY(5px);
+  transition: opacity var(--transition-medium) ease,
+    transform var(--transition-medium) ease;
+}
+
+.listing-card:hover .listing-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Edit button styling */
+.edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  color: var(--text);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-medium) ease;
+  flex: 1;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.edit-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.edit-btn:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.edit-btn:hover::before {
+  left: 100%;
+}
+
+.edit-btn:active {
+  transform: translateY(1px);
+}
+
+/* Delete button styling */
+.delete-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 1rem;
+  background-color: #fff0f0;
+  color: var(--accent);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-medium) ease;
+  flex: 1;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.delete-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.delete-btn:hover {
+  background-color: #ffe0e0;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.delete-btn:hover::before {
+  left: 100%;
+}
+
+.delete-btn:active {
+  transform: translateY(1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .listing-content {
+    min-height: 180px;
+    max-height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .listing-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .listing-email {
+    max-width: 100%;
+  }
+}

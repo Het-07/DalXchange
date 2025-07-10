@@ -1,0 +1,189 @@
+/* Dialog styling */
+.edit-listing-dialog {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 0 !important;
+}
+
+.edit-listing-dialog .p-dialog-content {
+  padding: 0 !important;
+  overflow: visible;
+}
+
+/* Custom header */
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dialog-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Content area */
+.dialog-content {
+  padding: 16px 24px 24px;
+  max-height: calc(90vh - 140px);
+  overflow-y: auto;
+}
+
+/* Form styling */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+/* Input styling */
+.p-inputtext,
+.p-dropdown {
+  width: 100%;
+  /* border: 1px solid #ddd !important; */
+  /* border-radius: 6px !important; */
+  /* padding: 12px !important; */
+  font-size: 16px !important;
+  background-color: #fff !important;
+  transition: border-color 0.2s !important;
+}
+
+.p-inputtext:focus,
+.p-dropdown:focus {
+  border-color: #aaa !important;
+  box-shadow: none !important;
+}
+
+.p-inputtext:disabled {
+  background-color: #f5f5f5 !important;
+  color: #777 !important;
+}
+
+textarea.p-inputtext {
+  resize: none;
+  min-height: 100px;
+}
+
+/* Image container */
+.image-container {
+  width: 100%;
+  background-color: var(--white);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.current-image {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+/* File input styling */
+.file-input {
+  display: none;
+}
+
+.file-input-label {
+  display: inline-block;
+  padding: 10px 16px;
+  background-color: var(--white);
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.file-input-label:hover {
+  background-color: #eee;
+}
+
+/* Footer styling */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #f0f0f0;
+  background-color: #fff;
+}
+
+/* Button styling */
+.cancel-button {
+  background-color: #fff !important;
+  border: 1px solid #ddd !important;
+  color: #333 !important;
+  padding: 10px 16px !important;
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  transition: background-color 0.2s !important;
+}
+
+.cancel-button:hover {
+  background-color: #f5f5f5 !important;
+}
+
+.save-button {
+  background-color: #b91c1c !important;
+  border: none !important;
+  color: white !important;
+  padding: 10px 16px !important;
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  transition: background-color 0.2s !important;
+}
+
+.save-button:hover {
+  background-color: #a51919 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .dialog-header h2 {
+    font-size: 20px;
+  }
+
+  .dialog-content {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,107 @@
+.create-page {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.create-overlay {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 1rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.create-grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.create-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.create-info h1 {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.create-info p {
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.back-btn {
+  width: fit-content;
+  background-color: var(--muted);
+  color: var(--background);
+}
+
+.create-form-card {
+  flex: 1;
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-field label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--text);
+}
+
+.p-inputtext,
+.p-dropdown,
+.p-inputtextarea,
+.p-inputnumber {
+  width: 100%;
+}
+
+.disabled-input {
+  background-color: #f5f5f5 !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  border: 1px solid #ddd !important;
+}
+
+.helper-text {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.submit-btn {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: var(--primary);
+  color: var(--text);
+  border: none;
+}
+
+.submit-btn:hover {
+  background-color: var(--muted);
+  color: var(--background);
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}

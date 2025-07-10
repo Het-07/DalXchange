@@ -1,0 +1,131 @@
+.homepage-wrapper {
+  background-color: var(--background);
+  padding: 4rem 2rem;
+  align-self: center;
+  margin: 2px 0;
+  overflow: hidden;
+}
+
+.homepage-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.homepage-text-content {
+  flex: 1 1 45%;
+}
+
+.homepage-heading {
+  font-size: 2.75rem;
+  color: var(--text);
+  font-weight: bold;
+}
+
+.homepage-subtext {
+  font-size: 1.25rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.homepage-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--text);
+}
+
+.btn-primary:hover {
+  background-color: #e6c200;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--text);
+  border: 2px solid var(--text);
+}
+
+.btn-outline:hover {
+  background-color: var(--text);
+  color: var(--white);
+}
+
+.homepage-categories-wrapper {
+  flex: 1 1 45%;
+  background-color: var(--white);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  transform: translateY(10px);
+  transition: all 0.3s ease-in-out;
+}
+
+.homepage-categories-wrapper:hover {
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18);
+  transform: translateY(5px);
+}
+
+.homepage-category-header {
+  background-color: var(--primary);
+  padding: 1rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.homepage-category-header h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.homepage-category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.homepage-category-card {
+  background-color: var(--background);
+  padding: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text);
+  transition: background-color 0.2s ease;
+}
+
+.homepage-category-card:hover {
+  background-color: var(--lightgrey);
+}
+
+.homepage-category-card h3 {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.homepage-category-card p {
+  font-size: 1rem;
+  color: var(--muted);
+}
+
+.homepage-welcome {
+  font-size: 2.5rem;
+  font-style: italic;
+}
