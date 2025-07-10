@@ -28,7 +28,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0",
     "react-oidc-context": "^3.3.0",
-    "react-router-dom": "^7.5.0",
+    "react-router-dom": "^7.6.3",
     "serve": "^14.2.4",
     "zod": "^3.24.3"
   },
