@@ -69,6 +69,10 @@ resource "aws_apigatewayv2_route" "get_listings_route" {
   api_id    = aws_apigatewayv2_api.api.id
   route_key = "GET /api/get-listings"
   target    = "integrations/${aws_apigatewayv2_integration.get_listings_integration.id}"
+  
+  # Adding JWT authorization to match other routes
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.cognito_authorizer.id
 }
 
 # Delete Listing Integration

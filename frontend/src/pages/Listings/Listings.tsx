@@ -77,22 +77,12 @@ const Listings = () => {
     try {
       console.log("Fetching listings from:", `${API_URL}/api/get-listings`);
 
-      const res = await fetch(`${API_URL}/api/get-listings`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        // Add cache control to avoid browser caching
-        cache: "no-store",
-      });
+      // Import our new API helper
+      const { listingsApi } = await import("../../aws/apiHelper");
 
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(
-          errorData.detail ||
-            `HTTP error! Status: ${res.status} - ${res.statusText}`
-        );
-      }
+      // Get listings with proper authentication
+      const data = await listingsApi.getListings();
 
-      const data = await res.json();
       console.log("Backend response:", data);
 
       // Handle both array response and object with Items property
@@ -201,14 +191,11 @@ const Listings = () => {
 
     if (isDynamic) {
       try {
-        const res = await fetch(`${API_URL}/api/delete-listing/${id}`, {
-          method: "DELETE",
-        });
+        // Import our new API helper
+        const { listingsApi } = await import("../../aws/apiHelper");
 
-        if (!res.ok) {
-          const errorData = await res.json().catch(() => ({}));
-          throw new Error(errorData.detail || "Delete failed");
-        }
+        // Delete listing with proper authentication
+        await listingsApi.deleteListing(id);
 
         toast.current?.show({
           severity: "success",
@@ -354,31 +341,18 @@ const Listings = () => {
     async (updated: Listing, isDynamic: boolean) => {
       if (isDynamic) {
         try {
-          const response = await fetch(
-            `${API_URL}/api/update-listing/${updated.id}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                title: updated.title,
-                description: updated.description,
-                category: updated.category,
-                price: Number(updated.price),
-                posted_by: updated.email,
-                image_url: updated.image,
-              }),
-            }
-          );
+          // Import our new API helper
+          const { listingsApi } = await import("../../aws/apiHelper");
 
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(
-              errorData.detail ||
-                `Failed to update listing: ${response.statusText}`
-            );
-          }
+          // Update listing with proper authentication
+          await listingsApi.updateListing(updated.id, {
+            title: updated.title,
+            description: updated.description,
+            category: updated.category,
+            price: Number(updated.price),
+            posted_by: updated.email,
+            image_url: updated.image,
+          });
 
           toast.current?.show({
             severity: "success",
