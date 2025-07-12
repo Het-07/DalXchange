@@ -26,10 +26,10 @@ resource "aws_amplify_app" "frontend" {
   # Environment variables for Amplify
   environment_variables = {
     VITE_API_ENDPOINT     = ""
-    VITE_COGNITO_DOMAIN   = "https://${aws_cognito_user_pool_domain.domain.domain}.auth.${var.aws_region}.amazoncognito.com"
+    VITE_COGNITO_DOMAIN   = "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.aws_region}.amazoncognito.com"
     VITE_COGNITO_CLIENT_ID = aws_cognito_user_pool_client.client.id
-    VITE_COGNITO_REDIRECT_URI = "https://${var.environment}.${var.project_name}-frontend.${var.aws_region}.amplifyapp.com/auth/callback"
-    VITE_COGNITO_LOGOUT_URI = "https://${var.environment}.${var.project_name}-frontend.${var.aws_region}.amplifyapp.com"
+    VITE_COGNITO_REDIRECT_URI = var.cognito_callback_url
+    VITE_COGNITO_LOGOUT_URI = var.cognito_logout_url
   }
 
   # Auto branch configuration for main branch

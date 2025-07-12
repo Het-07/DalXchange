@@ -1,5 +1,5 @@
 resource "aws_secretsmanager_secret" "api_keys" {
-  name                    = "${var.project_name}/api-keys-v2"
+  name                    = "${var.project_name}/api-keys-v3"
   description             = "API Keys for DalXchange"
   recovery_window_in_days = 7
 }
@@ -9,7 +9,7 @@ resource "aws_secretsmanager_secret_version" "api_keys_version" {
   secret_string = jsonencode({
     cognito_client_id     = aws_cognito_user_pool_client.client.id,
     cognito_user_pool_id  = aws_cognito_user_pool.user_pool.id,
-    cognito_domain        = aws_cognito_user_pool_domain.domain.domain,
+    cognito_domain        = "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.aws_region}.amazoncognito.com",
     # Initialize with empty value, will be updated later
     api_gateway_endpoint  = ""
   })
@@ -32,7 +32,7 @@ resource "null_resource" "update_api_keys_secret" {
       --secret-string '{
         "cognito_client_id": "${aws_cognito_user_pool_client.client.id}",
         "cognito_user_pool_id": "${aws_cognito_user_pool.user_pool.id}",
-        "cognito_domain": "${aws_cognito_user_pool_domain.domain.domain}",
+        "cognito_domain": "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.aws_region}.amazoncognito.com",
         "api_gateway_endpoint": "${aws_apigatewayv2_stage.api_stage.invoke_url}"
       }'
     EOT

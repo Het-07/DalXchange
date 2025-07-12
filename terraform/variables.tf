@@ -43,13 +43,13 @@ variable "cognito_user_pool_name" {
 variable "cognito_callback_url" {
   description = "Callback URL for Cognito authentication"
   type        = string
-  default     = "https://dev.dalxchange.us-east-1.amplifyapp.com/auth/callback"
+  default     = "https://dev.d1q2g4o92yok08.amplifyapp.com/auth/callback"
 }
 
 variable "cognito_logout_url" {
   description = "Logout URL for Cognito authentication"
   type        = string
-  default     = "https://dev.dalxchange.us-east-1.amplifyapp.com"
+  default     = "https://dev.d1q2g4o92yok08.amplifyapp.com"
 }
 
 variable "dynamodb_table_name" {

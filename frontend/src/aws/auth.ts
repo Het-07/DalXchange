@@ -3,7 +3,7 @@ export const login = () => {
   const clientId = import.meta.env.VITE_COGNITO_CLIENT_ID;
   const redirectUri = import.meta.env.VITE_COGNITO_REDIRECT_URI;
 
-  const url = `${domain}/login?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+  const url = `https://${domain}/login?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
   window.location.href = url;
 };
 
@@ -17,7 +17,7 @@ export const logout = () => {
   localStorage.removeItem('id_token');
   localStorage.removeItem('refresh_token');
 
-  const url = `${domain}/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
+  const url = `https://${domain}/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
   window.location.href = url;
 };
 
@@ -52,7 +52,7 @@ export const refreshToken = async (): Promise<boolean> => {
       redirect_uri: redirectUri,
     });
 
-    const response = await fetch(`${domain}/oauth2/token`, {
+    const response = await fetch(`https://${domain}/oauth2/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

@@ -5,6 +5,7 @@ resource "aws_apigatewayv2_api" "api" {
     allow_origins = [
       "https://${var.project_name}-frontend.${var.aws_region}.amplifyapp.com",
       "https://${var.environment}.${var.project_name}-frontend.${var.aws_region}.amplifyapp.com",
+      "https://dev.d1q2g4o92yok08.amplifyapp.com",
       "http://localhost:5173"
     ]
     allow_methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]

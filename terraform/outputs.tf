@@ -15,7 +15,7 @@ output "cognito_client_id" {
 
 output "cognito_domain" {
   description = "Domain of the Cognito User Pool"
-  value       = "https://${aws_cognito_user_pool_domain.domain.domain}.auth.${var.aws_region}.amazoncognito.com"
+  value       = "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.aws_region}.amazoncognito.com"
 }
 
 output "frontend_url" {
