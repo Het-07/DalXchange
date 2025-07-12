@@ -394,25 +394,6 @@ def update_listing_handler(event, context):
         return response(500, {"error": f"Internal server error: {str(e)}"})
 
 
-def rotate_secrets_handler(event, context):
-    """
-    Handler for rotating secrets in Secrets Manager.
-    This is a placeholder function that would be expanded for actual secret rotation.
-    
-    Args:
-        event: Secrets Manager rotation event
-        context: Lambda context
-    """
-    try:
-        print("Secret rotation triggered")
-        # In a real implementation, you would rotate credentials here
-        # Currently, our secrets are static (Cognito client ID, etc.)
-        return {"statusCode": 200, "body": "Rotation successful"}
-    except Exception as e:
-        print(f"Error rotating secrets: {str(e)}")
-        return {"statusCode": 500, "body": f"Error: {str(e)}"}
-
-
 def response(status_code: int, body: Any) -> Dict[str, Any]:
     """
     Helper function to create a standardized API Gateway response.

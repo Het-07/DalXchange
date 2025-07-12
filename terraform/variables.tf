@@ -99,9 +99,3 @@ variable "api_gateway_stage_name" {
   type        = string
   default     = "api"
 }
-
-variable "secret_manager_rotation_days" {
-  description = "Number of days before rotating secrets"
-  type        = number
-  default     = 30
-}
