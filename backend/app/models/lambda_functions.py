@@ -10,7 +10,7 @@ class ListingIn(BaseModel):
     description: str
     category: str
     price: float
-    posted_by: str
+    posted_by: Optional[str] = ""  # Modified to be optional with empty string default
     image_base64: str
 
 class ListingUpdate(BaseModel):
@@ -34,13 +34,17 @@ def add_listing_logic(body: dict):
     from uuid import uuid4
     listing_data = ListingIn(**body)
     listing_id = str(uuid4())
+    
+    # Use empty string if posted_by is None or empty
+    posted_by = listing_data.posted_by or ""
+    
     item = {
         "listing_id": listing_id,
         "title": listing_data.title,
         "description": listing_data.description,
         "category": listing_data.category,
         "price": str(listing_data.price),
-        "posted_by": listing_data.posted_by,
+        "posted_by": posted_by,
         "image_url": f"data:image/jpeg;base64,{listing_data.image_base64}",  # Store the full base64 image
     }
     LISTINGS.append(item)

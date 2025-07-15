@@ -34,18 +34,24 @@ export interface ApiResponse<T> {
 }
 
 /**
- * Helper function for making authenticated API requests
+ * Helper function for making API requests with optional authentication
  */
 export const makeAuthenticatedRequest = async <T = unknown>(
   endpoint: string,
   method: string = 'GET',
-  body: Record<string, unknown> | null = null
+  body: Record<string, unknown> | null = null,
+  requireAuth: boolean = false
 ): Promise<T> => {
-  // Build headers with authentication
+  // Build headers with authentication if available
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...getAuthHeader()
   };
+  
+  // Add auth headers if token exists
+  const authHeaders = getAuthHeader();
+  if (Object.keys(authHeaders).length > 0) {
+    Object.assign(headers, authHeaders);
+  }
   
   // Build request options
   const options: RequestInit = {
@@ -63,8 +69,8 @@ export const makeAuthenticatedRequest = async <T = unknown>(
     // Make the API request
     let response = await fetch(`${API_URL}${endpoint}`, options);
     
-    // If unauthorized, try to refresh token
-    if (response.status === 401) {
+    // If unauthorized and auth is required, try to refresh token
+    if (response.status === 401 && requireAuth) {
       const refreshed = await refreshToken();
       
       if (refreshed) {
@@ -74,8 +80,8 @@ export const makeAuthenticatedRequest = async <T = unknown>(
         
         // Retry request with new token
         response = await fetch(`${API_URL}${endpoint}`, options);
-      } else {
-        // If refresh failed, redirect to login
+      } else if (requireAuth) {
+        // If refresh failed and auth is required, redirect to login
         login();
         throw new Error('Authentication required. Redirecting to login...');
       }
@@ -100,12 +106,20 @@ export const makeAuthenticatedRequest = async <T = unknown>(
 
 /**
  * Helper functions for common API operations
- * Note: API Gateway routes include the /api prefix which needs to be included in our endpoints
- * to match the routes defined in API Gateway
+ * 
+ * API structure:
+ * Base URL: https://bcsj2oef85.execute-api.us-east-1.amazonaws.com
+ * API Stage: /api
+ * Endpoints: /get-listings, /add-listing, etc.
+ * 
+ * Full URL example: https://bcsj2oef85.execute-api.us-east-1.amazonaws.com/api/get-listings
  */
 export const listingsApi = {
+  // Public endpoints - no auth required
   getListings: () => makeAuthenticatedRequest<ApiResponse<Listing>>('/api/get-listings'),
   addListing: (data: ListingInput) => makeAuthenticatedRequest<ApiResponse<Listing>>('/api/add-listing', 'POST', data),
-  updateListing: (id: string, data: ListingInput) => makeAuthenticatedRequest<ApiResponse<Listing>>(`/api/update-listing/${id}`, 'PUT', data),
-  deleteListing: (id: string) => makeAuthenticatedRequest<ApiResponse<unknown>>(`/api/delete-listing/${id}`, 'DELETE')
+  
+  // Protected endpoints - auth required
+  updateListing: (id: string, data: ListingInput) => makeAuthenticatedRequest<ApiResponse<Listing>>(`/api/update-listing/${id}`, 'PUT', data, true),
+  deleteListing: (id: string) => makeAuthenticatedRequest<ApiResponse<unknown>>(`/api/delete-listing/${id}`, 'DELETE', null, true)
 };

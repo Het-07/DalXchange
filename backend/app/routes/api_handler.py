@@ -56,7 +56,11 @@ async def _handle_api_call(logic_function, request_body=None, path_param=None):
 
 @router.post("/api/add-listing")
 async def add_listing(listing_data: ListingIn): 
-    return await _handle_api_call(add_listing_logic, request_body=listing_data.dict())
+    # Handle the case where posted_by might be empty for non-authenticated users
+    data_dict = listing_data.dict()
+    if not data_dict.get("posted_by"):
+        print("Creating anonymous listing with empty email")
+    return await _handle_api_call(add_listing_logic, request_body=data_dict)
 
 @router.get("/api/get-listings")
 async def get_listings():

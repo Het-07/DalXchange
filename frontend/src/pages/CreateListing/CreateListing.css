@@ -84,6 +84,12 @@
   border: 1px solid #ddd !important;
 }
 
+.non-auth-input {
+  background-color: #fff8f8 !important;
+  color: #999 !important;
+  border: 1px dashed #ddd !important;
+}
+
 .helper-text {
   color: var(--muted);
   font-size: 0.8rem;

@@ -13,7 +13,7 @@ import { Button } from "primereact/button";
 import { useForm, Controller } from "react-hook-form";
 import campusImage from "../../assets/campus.png";
 import { Toast } from "primereact/toast";
-import { jwtDecode } from "jwt-decode";
+import { getUserEmail, isAuthenticated } from "../../aws/auth";
 
 type ListingFormData = {
   title: string;
@@ -21,11 +21,6 @@ type ListingFormData = {
   category: string;
   price: number;
   postedBy: string;
-};
-
-type JwtCustomPayload = {
-  email?: string;
-  [key: string]: unknown;
 };
 
 const categories = [
@@ -38,56 +33,31 @@ const categories = [
   { label: "Others", value: "Others" },
 ];
 
-const decodeJWT = (token: string): JwtCustomPayload | null => {
-  try {
-    return jwtDecode<JwtCustomPayload>(token);
-  } catch (err) {
-    console.error("JWT Decode Error:", err);
-    return null;
-  }
-};
-
 export default function CreateListing() {
   const navigate = useNavigate();
   const toast = useRef<Toast>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadMessage, setUploadMessage] = useState<string>("");
-  const [userEmail, setUserEmail] = useState<string>("");
 
-  // Updated email handling to only use JWT token
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
   useEffect(() => {
-    const idToken = localStorage.getItem("id_token");
-    if (idToken) {
-      try {
-        const decoded = decodeJWT(idToken);
-        if (decoded?.email) {
-          setUserEmail(decoded.email);
-        } else {
-          // If no email in token, redirect to login
-          toast.current?.show({
-            severity: "error",
-            summary: "Authentication Error",
-            detail: "Please login again to continue",
-            life: 3000,
-          });
-          setTimeout(() => navigate("/auth/login"), 3000);
-        }
-      } catch (error) {
-        console.error("Failed to decode token:", error);
-        toast.current?.show({
-          severity: "error",
-          summary: "Authentication Error",
-          detail: "Please login again to continue",
-          life: 3000,
-        });
-        setTimeout(() => navigate("/auth/login"), 3000);
+    // Check if user is authenticated
+    const authenticated = isAuthenticated();
+    setIsLoggedIn(authenticated);
+
+    if (authenticated) {
+      // Get the user's email from the auth helper
+      const email = getUserEmail();
+      if (email) {
+        setUserEmail(email);
+      } else {
+        console.log("User is authenticated but email not found");
       }
-    } else {
-      // No token found, redirect to login
-      navigate("/auth/login");
     }
-  }, [navigate]);
+  }, []);
 
   const {
     control,
@@ -131,26 +101,30 @@ export default function CreateListing() {
         description: data.description,
         category: data.category,
         price: data.price,
-        posted_by: userEmail, // Using the email from JWT token
+        posted_by: userEmail, // Use the email from state
         image_base64: base64Image.split(",")[1],
       };
 
+      console.log("Sending listing creation request");
+
+      // Import our API helper
       const { listingsApi } = await import("../../aws/apiHelper");
-      const result = await listingsApi.addListing(payload);
 
-      if (result.statusCode === 200) {
-        toast.current?.show({
-          severity: "success",
-          summary: "Success",
-          detail: "Listing created successfully!",
-        });
+      // Use the authenticated API helper to add the listing
+      await listingsApi.addListing(payload);
 
-        setTimeout(() => {
-          navigate("/listings");
-        }, 1500);
-      } else {
-        throw new Error(result.message || "Failed to create listing");
-      }
+      console.log("Listing created successfully");
+
+      toast.current?.show({
+        severity: "success",
+        summary: "Success",
+        detail: "Listing created successfully!",
+      });
+
+      // Navigate back to listings after success
+      setTimeout(() => {
+        navigate("/listings");
+      }, 1500);
     } catch (err) {
       console.error("Listing creation failed:", err);
 
@@ -198,6 +172,26 @@ export default function CreateListing() {
           </div>
 
           <div className="create-form-card">
+            {!isLoggedIn && (
+              <div
+                className="login-prompt"
+                style={{
+                  padding: "10px",
+                  marginBottom: "15px",
+                  backgroundColor: "#fff9e6",
+                  borderRadius: "5px",
+                  border: "1px solid #ffeeba",
+                }}
+              >
+                <p style={{ marginBottom: "10px" }}>
+                  <strong>Note:</strong> You are not currently logged in.
+                </p>
+                <p>
+                  You can browse the form, but you'll need to login before
+                  creating a listing.
+                </p>
+              </div>
+            )}
             <form onSubmit={handleSubmit(onSubmit)} className="form">
               <div className="form-field">
                 <label htmlFor="title">Title</label>
@@ -332,14 +326,23 @@ export default function CreateListing() {
                   value={userEmail}
                   disabled
                   className="disabled-input"
+                  placeholder={isLoggedIn ? "" : "Please login to set email"}
                 />
                 <small className="helper-text">
-                  Listings are created under your account email
+                  {isLoggedIn
+                    ? "Listings are created under your account email"
+                    : "Please login to create a listing"}
                 </small>
               </div>
 
               <Button
-                label={isSubmitting ? "Creating..." : "Create Listing"}
+                label={
+                  isSubmitting
+                    ? "Creating..."
+                    : isLoggedIn
+                    ? "Create Listing"
+                    : "Login to Create Listing"
+                }
                 type="submit"
                 className="submit-btn"
                 disabled={isSubmitting}
