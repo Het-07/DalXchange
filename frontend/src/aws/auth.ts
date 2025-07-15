@@ -1,3 +1,13 @@
+import { jwtDecode } from "jwt-decode";
+
+interface JwtPayload {
+  email?: string;
+  sub?: string;
+  exp?: number;
+  iat?: number;
+  [key: string]: unknown;
+}
+
 export const login = () => {
   const domain = import.meta.env.VITE_COGNITO_DOMAIN;
   const clientId = import.meta.env.VITE_COGNITO_CLIENT_ID;
@@ -13,20 +23,49 @@ export const logout = () => {
   const logoutUri = import.meta.env.VITE_COGNITO_LOGOUT_URI;
 
   // Clear tokens from local storage
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('id_token');
-  localStorage.removeItem('refresh_token');
+  clearAuthTokens();
 
   const url = `https://${domain}/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
   window.location.href = url;
+};
+
+export const clearAuthTokens = () => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('id_token');
+  localStorage.removeItem('refresh_token');
 };
 
 export const getToken = (): string | null => {
   return localStorage.getItem('access_token');
 };
 
+export const getIdToken = (): string | null => {
+  return localStorage.getItem('id_token');
+};
+
 export const isAuthenticated = (): boolean => {
-  return !!getToken();
+  const token = getToken();
+  if (!token) return false;
+
+  try {
+    const decoded = jwtDecode<JwtPayload>(token);
+    const currentTime = Math.floor(Date.now() / 1000);
+    return decoded.exp ? decoded.exp > currentTime : false;
+  } catch {
+    return false;
+  }
+};
+
+export const getUserEmail = (): string | null => {
+  const idToken = getIdToken();
+  if (!idToken) return null;
+
+  try {
+    const decoded = jwtDecode<JwtPayload>(idToken);
+    return decoded.email || null;
+  } catch {
+    return null;
+  }
 };
 
 export const getAuthHeader = (): Record<string, string> => {

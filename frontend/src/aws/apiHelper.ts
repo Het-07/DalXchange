@@ -19,7 +19,8 @@ export interface ListingInput extends Record<string, unknown> {
   category: string;
   price: number;
   posted_by: string;
-  image_url: string;
+  image_url?: string;
+  image_base64?: string;
 }
 
 export interface ApiResponse<T> {

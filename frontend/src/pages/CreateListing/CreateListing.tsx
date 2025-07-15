@@ -38,8 +38,14 @@ const categories = [
   { label: "Others", value: "Others" },
 ];
 
-// Base API URL from environment variables
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const decodeJWT = (token: string): JwtCustomPayload | null => {
+  try {
+    return jwtDecode<JwtCustomPayload>(token);
+  } catch (err) {
+    console.error("JWT Decode Error:", err);
+    return null;
+  }
+};
 
 export default function CreateListing() {
   const navigate = useNavigate();
@@ -47,37 +53,41 @@ export default function CreateListing() {
   const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadMessage, setUploadMessage] = useState<string>("");
-
   const [userEmail, setUserEmail] = useState<string>("");
 
+  // Updated email handling to only use JWT token
   useEffect(() => {
-    const storedEmail = localStorage.getItem("user_email");
-    if (storedEmail) {
-      setUserEmail(storedEmail);
-    } else {
-      const idToken = localStorage.getItem("id_token");
-      if (idToken) {
-        try {
-          const decoded = decodeJWT(idToken);
-          if (decoded?.email) {
-            setUserEmail(decoded.email);
-            localStorage.setItem("user_email", decoded.email);
-          }
-        } catch (error) {
-          console.error("Failed to decode token:", error);
+    const idToken = localStorage.getItem("id_token");
+    if (idToken) {
+      try {
+        const decoded = decodeJWT(idToken);
+        if (decoded?.email) {
+          setUserEmail(decoded.email);
+        } else {
+          // If no email in token, redirect to login
+          toast.current?.show({
+            severity: "error",
+            summary: "Authentication Error",
+            detail: "Please login again to continue",
+            life: 3000,
+          });
+          setTimeout(() => navigate("/auth/login"), 3000);
         }
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+        toast.current?.show({
+          severity: "error",
+          summary: "Authentication Error",
+          detail: "Please login again to continue",
+          life: 3000,
+        });
+        setTimeout(() => navigate("/auth/login"), 3000);
       }
+    } else {
+      // No token found, redirect to login
+      navigate("/auth/login");
     }
-  }, []);
-
-  const decodeJWT = (token: string): JwtCustomPayload | null => {
-    try {
-      return jwtDecode<JwtCustomPayload>(token);
-    } catch (err) {
-      console.error("JWT Decode Error:", err);
-      return null;
-    }
-  };
+  }, [navigate]);
 
   const {
     control,
@@ -121,63 +131,26 @@ export default function CreateListing() {
         description: data.description,
         category: data.category,
         price: data.price,
-        posted_by: data.postedBy,
+        posted_by: userEmail, // Using the email from JWT token
         image_base64: base64Image.split(",")[1],
       };
 
-      // --- Added for debugging ---
-      console.log("API URL being used:", API_URL);
-      console.log("Sending payload to API:", {
-        ...payload,
-        image_base64: "[BASE64_DATA_OMITTED_FOR_LOG]", // Omit large base64 string from console
-      });
-      // --- End debugging additions ---
+      const { listingsApi } = await import("../../aws/apiHelper");
+      const result = await listingsApi.addListing(payload);
 
-      console.log("Sending request to:", `${API_URL}/api/add-listing`);
+      if (result.statusCode === 200) {
+        toast.current?.show({
+          severity: "success",
+          summary: "Success",
+          detail: "Listing created successfully!",
+        });
 
-      const response = await fetch(`${API_URL}/api/add-listing`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const responseText = await response.text();
-      console.log("Server response:", responseText);
-
-      if (!response.ok) {
-        let errorDetail;
-        try {
-          // Try to parse as JSON if possible
-          const errorData = JSON.parse(responseText);
-          errorDetail =
-            errorData.detail ||
-            errorData.message ||
-            errorData.error ||
-            responseText;
-        } catch {
-          // Parse error occurred, use raw response text
-          errorDetail =
-            responseText ||
-            `Server responded with ${response.status}: ${response.statusText}`;
-        }
-        throw new Error(errorDetail);
+        setTimeout(() => {
+          navigate("/listings");
+        }, 1500);
+      } else {
+        throw new Error(result.message || "Failed to create listing");
       }
-
-      // Parse the success response as JSON
-      const result = JSON.parse(responseText);
-      console.log("Listing created successfully:", result);
-
-      toast.current?.show({
-        severity: "success",
-        summary: "Success",
-        detail: "Listing created successfully!",
-      });
-
-      setTimeout(() => {
-        navigate("/listings");
-      }, 1500);
     } catch (err) {
       console.error("Listing creation failed:", err);
 
