@@ -76,15 +76,10 @@ const Listings = () => {
 
     try {
       console.log("Fetching listings from:", `${API_URL}/api/get-listings`);
-
       // Import our new API helper
       const { listingsApi } = await import("../../aws/apiHelper");
-
       // Get listings with proper authentication
       const data = await listingsApi.getListings();
-
-      console.log("Backend response:", data);
-
       // Handle both array response and object with Items property
       const items = Array.isArray(data) ? data : data.Items || [];
 
@@ -183,7 +178,7 @@ const Listings = () => {
     }
 
     initialized.current = true;
-  }, [fetchListingsFromBackend]); // Include fetchListingsFromBackend as a dependency
+  }, [fetchListingsFromBackend]);
 
   // Memoize these functions to avoid unnecessary re-renders
   const handleDelete = useCallback(async (id: string) => {
@@ -242,7 +237,7 @@ const Listings = () => {
 
       return updatedListings;
     });
-  }, []); // No dependencies needed for this callback
+  }, []);
 
   // Sorting function
   const sortListings = useCallback(
@@ -411,7 +406,7 @@ const Listings = () => {
       setEditId(null);
     },
     []
-  ); // No dependencies needed
+  );
 
   // Apply filters and pagination - only calculate these when dependencies change
   const filteredListings = getFilteredListings();

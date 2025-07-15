@@ -1,3 +1,4 @@
+// filepath: /Users/apple/Documents/Portfolio/DalXchange/frontend/src/aws/apiHelper.ts
 import { getAuthHeader, refreshToken, login } from './auth';
 
 const API_URL = import.meta.env.VITE_API_BASE_URL;
@@ -99,6 +100,8 @@ export const makeAuthenticatedRequest = async <T = unknown>(
 
 /**
  * Helper functions for common API operations
+ * Note: API Gateway routes include the /api prefix which needs to be included in our endpoints
+ * to match the routes defined in API Gateway
  */
 export const listingsApi = {
   getListings: () => makeAuthenticatedRequest<ApiResponse<Listing>>('/api/get-listings'),

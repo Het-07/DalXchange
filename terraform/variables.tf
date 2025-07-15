@@ -88,6 +88,13 @@ variable "github_branch" {
   default     = "main"
 }
 
+variable "github_token" {
+  description = "GitHub personal access token for Amplify"
+  type        = string
+  sensitive   = true
+  # Don't set a default for sensitive values
+}
+
 variable "api_gateway_name" {
   description = "Name of the API Gateway"
   type        = string

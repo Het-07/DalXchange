@@ -1,7 +1,8 @@
 resource "aws_amplify_app" "frontend" {
   name         = "${var.project_name}-frontend"
   repository   = var.github_repository
-  access_token = data.aws_ssm_parameter.github_token.value
+  # Using a placeholder token - update with your actual GitHub token value when running
+  access_token = var.github_token
 
   build_spec = <<-EOT
     version: 1
@@ -11,6 +12,7 @@ resource "aws_amplify_app" "frontend" {
           commands:
             - cd frontend
             - npm ci
+            - npm install terser --save-dev
         build:
           commands:
             - npm run build
@@ -25,11 +27,12 @@ resource "aws_amplify_app" "frontend" {
 
   # Environment variables for Amplify
   environment_variables = {
-    VITE_API_ENDPOINT     = ""
+    VITE_API_BASE_URL     = ""
     VITE_COGNITO_DOMAIN   = "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.aws_region}.amazoncognito.com"
     VITE_COGNITO_CLIENT_ID = aws_cognito_user_pool_client.client.id
     VITE_COGNITO_REDIRECT_URI = var.cognito_callback_url
     VITE_COGNITO_LOGOUT_URI = var.cognito_logout_url
+    VITE_S3_BUCKET_NAME = aws_s3_bucket.images_bucket.id
   }
 
   # Auto branch configuration for main branch
@@ -56,7 +59,7 @@ resource "aws_amplify_branch" "main" {
   branch_name = var.github_branch
   
   framework = "React"
-  stage     = "DEVELOPMENT" # Changed from var.environment to a valid stage value
+  stage     = "DEVELOPMENT" 
   
   environment_variables = {
     ENV = var.environment
@@ -78,12 +81,7 @@ resource "null_resource" "update_amplify_env_vars" {
   provisioner "local-exec" {
     command = <<EOT
       aws amplify update-app --app-id ${aws_amplify_app.frontend.id} \
-      --environment-variables VITE_API_ENDPOINT=${aws_apigatewayv2_stage.api_stage.invoke_url}
+      --environment-variables VITE_API_BASE_URL=${aws_apigatewayv2_stage.api_stage.invoke_url}
     EOT
   }
-}
-
-# Get GitHub token from SSM Parameter Store
-data "aws_ssm_parameter" "github_token" {
-  name = "/github/token"  # This should match the name of your SSM parameter
 }
