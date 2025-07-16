@@ -18,6 +18,12 @@ DalXchange is a modern, full-stack web application designed for listing and exch
 
 ---
 
+### Architecture Diagram
+
+<p align="left">
+  <img src="documentation/DalXchange.png" alt="DalXchange Architecture Diagram" width="800"/>
+</p>
+
 ## Repository Structure
 
 - [backend/README.md](backend/README.md) — Details about the Python FastAPI backend, including API endpoints, dependencies, and setup instructions.
