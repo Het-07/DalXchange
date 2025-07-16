@@ -16,15 +16,11 @@ DalXchange is a modern, full-stack web application designed for listing and exch
 - Scalable data storage using AWS DynamoDB
 - Infrastructure managed and provisioned with Terraform
 
----
-
 ### Architecture Diagram
 
 <p align="center">
   <img src="documentation/DalXchange.png" alt="DalXchange Architecture Diagram" width="800"/>
 </p>
-
----
 
 ### Demo Video
 
