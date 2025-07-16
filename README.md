@@ -29,8 +29,8 @@ DalXchange is a modern, full-stack web application designed for listing and exch
 ### Demo Video
 
 Check out the project demo video here:
-[documentation/DalXchange.mp4](documentation/DalXchange.mp4)
-https://github.com/user-attachments/assets/4bae056a-6d5d-4a7a-b01a-43d2263d2c9f
+[documentation/DalXchange.mp4]([documentation/DalXchange.mp4](https://github.com/user-attachments/assets/4bae056a-6d5d-4a7a-b01a-43d2263d2c9f))
+
 
 ## Repository Structure
 
