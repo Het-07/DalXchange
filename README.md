@@ -28,11 +28,8 @@ DalXchange is a modern, full-stack web application designed for listing and exch
 
 ### Demo Video
 
-<p align="center">
-  <video width="800" controls>
-    <source src="documentation/DalXchange.mp4" type="video/mp4">
-  </video>
-</p>
+Check out the project demo video here:
+[documentation/DalXchange.mp4](documentation/DalXchange.mp4)
 
 ## Repository Structure
 
