@@ -6,7 +6,7 @@
 
 DalXchange is a modern, full-stack web application designed for listing and exchanging items within a Dalhousie University student community. The platform enables users to post, browse, and manage item listings, facilitating secure and efficient exchanges. DalXchange leverages AWS cloud infrastructure for scalability, reliability, and security, using Terraform for infrastructure-as-code, a React frontend for a seamless user experience, and a Python FastAPI backend for robust API services.
 
-### Key Features
+## Key Features
 
 - User authentication and management via AWS Cognito
 - Secure item listing and exchange workflows
@@ -16,13 +16,13 @@ DalXchange is a modern, full-stack web application designed for listing and exch
 - Scalable data storage using AWS DynamoDB
 - Infrastructure managed and provisioned with Terraform
 
-### Architecture Diagram
+## Architecture Diagram
 
-<p align="center">
+<p align="left">
   <img src="documentation/DalXchange.png" alt="DalXchange Architecture Diagram" width="800"/>
 </p>
 
-### Demo Video
+## Demo Video
 
 Check out the project demo video here:
 https://github.com/user-attachments/assets/445b644b-ba24-4389-92bf-798dd175e438
