@@ -7,11 +7,12 @@ This directory contains the Terraform configuration files to deploy the DalXchan
 - AWS Lambda - Backend (serverless)
 - AWS Amplify - Frontend (provision when commit)
 - AWS Cognito - Authentication flow
-- S3 Bucket - Image storage
+- Amazon S3 Bucket - Image storage
 - DynamoDB - Database
 - Secrets Manager - Secure storage for API keys
 - API Gateway - API endpoint management
 - VPC - Network isolation
+- CloudWatch - Logging and Monitoring
 
 ## Prerequisites
 
@@ -72,16 +73,53 @@ This directory contains the Terraform configuration files to deploy the DalXchan
    - Navigate to your frontend URL
    - Attempt to sign in using Cognito
 
-## Clean Up
-
-To destroy all resources:
-
-```bash
-terraform destroy
-```
-
 ## Troubleshooting
 
 - If the Lambda functions fail to deploy, check the CloudWatch logs
 - If Amplify build fails, check the build logs in the Amplify Console
 - For authentication issues, verify the Cognito configuration in the AWS Console
+
+# DalXchange Terraform Infrastructure
+
+This folder contains the infrastructure-as-code setup for DalXchange, using Terraform to provision AWS resources.
+
+## Architecture Overview
+
+- **VPC** with two public subnets for Lambda functions
+- **Internet Gateway** and **Route Table** for internet access
+- **API Gateway** for HTTP endpoints
+- **Lambda Functions** for backend logic
+- **DynamoDB** for data storage
+- **Cognito** for user authentication
+- **S3 Bucket** for image storage
+- **Amplify** for hosting the frontend
+- **CloudWatch** for logging and monitoring
+
+## Key Files
+
+- `main.tf`: VPC, subnets, networking, security groups
+- `api_gateway.tf`: API Gateway setup
+- `lambda.tf`: Lambda functions and IAM roles
+- `dynamodb.tf`: DynamoDB table and policies
+- `cognito.tf`: Cognito user pool and client
+- `s3.tf`: S3 bucket and configuration
+- `amplify.tf`: Amplify app setup
+- `variables.tf`: Input variables
+- `outputs.tf`: Output values
+
+## Setup & Deployment
+
+1. Install Terraform: https://www.terraform.io/downloads.html
+2. Initialize the project:
+   ```bash
+   terraform init
+   ```
+3. Review and apply the plan:
+   ```bash
+   terraform plan
+   terraform apply
+   ```
+4. To destroy all resources:
+   ```bash
+   terraform destroy
+   ```
